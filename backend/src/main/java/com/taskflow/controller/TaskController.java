@@ -13,11 +13,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
+
+    private static final Set<String> VALID_STATUSES = Set.of("todo", "in_progress", "done");
+    private static final Set<String> VALID_PRIORITIES = Set.of("low", "medium", "high");
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
@@ -50,6 +54,10 @@ public class TaskController {
             task.setDescription(request.getDescription());
 
         if (request.getStatus() != null && !request.getStatus().equals(task.getStatus())) {
+            if (!VALID_STATUSES.contains(request.getStatus())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Invalid status. Must be one of: todo, in_progress, done");
+            }
             boolean isAssignee = task.getAssigneeId() != null && task.getAssigneeId().equals(userDetails.getId());
             if (!isOwner && !isAssignee) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
@@ -58,8 +66,13 @@ public class TaskController {
             task.setStatus(request.getStatus());
         }
 
-        if (request.getPriority() != null)
+        if (request.getPriority() != null) {
+            if (!VALID_PRIORITIES.contains(request.getPriority())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Invalid priority. Must be one of: low, medium, high");
+            }
             task.setPriority(request.getPriority());
+        }
         if (request.getDue_date() != null)
             task.setDueDate(request.getDue_date());
 

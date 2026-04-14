@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { fetchApi } from '../api';
 import { Loader } from 'lucide-react';
@@ -10,7 +10,10 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user, loading: authLoading } = useAuth();
+
+  // Redirect already-authenticated users
+  if (!authLoading && user) return <Navigate to="/projects" replace />;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

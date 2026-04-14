@@ -239,6 +239,7 @@ export default function ProjectDetail() {
         method: 'PATCH',
         body: JSON.stringify(taskData),
       });
+      toast('Task updated successfully');
     } else {
       await fetchApi(`/projects/${id}/tasks`, {
         method: 'POST',

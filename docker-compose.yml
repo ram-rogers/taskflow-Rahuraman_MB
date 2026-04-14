@@ -27,7 +27,7 @@ services:
       DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-taskflow}
       DB_USER: ${DB_USER:-taskflow}
       DB_PASSWORD: ${DB_PASSWORD:-taskflow_pass}
-      JWT_SECRET: ${JWT_SECRET:-supersecretkeythatisatleast256bitslongsothatitsecuresjwtproperly1234567890}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "4000:4000"
     depends_on:
