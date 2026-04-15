@@ -38,7 +38,16 @@ The Frontend app corresponds to [http://localhost:3000](http://localhost:3000)
 The Backend API runs at [http://localhost:4000](http://localhost:4000)
 
 ## 4. Running Migrations
-Migrations are handled automatically by Flyway upon application start. Docker-compose runs the Postgres database and Spring Boot initializes the schema automatically. Schema definitions, seed data, and schema updates (`V1` through `V4`) are included in `backend/src/main/resources/db/migration`.
+Migrations are handled automatically by Flyway upon application start. Docker-compose runs the Postgres database and Spring Boot initializes the schema automatically. Schema definitions, seed data, and schema updates (`V1` through `V7`) are included in `backend/src/main/resources/db/migration`.
+
+**Schema Summary:**
+- `V1` — Initial schema
+- `V2` — Legacy seed data
+- `V3` — Reseed test data (using pgcrypto)
+- `V4` — Add creator to tasks
+- `V5` — Backfill test data
+- `V6` — Add login attempts to users
+- `V7` — Fix test user password hash
 
 ## 5. Test Credentials
 A user is seeded into the database for immediate testing:
